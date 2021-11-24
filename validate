@@ -1,0 +1,1 @@
+vnu --also-check-css --filterpattern ".*(v-|:|@).*" public/*.html public/*.css

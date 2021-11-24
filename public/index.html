@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8"/>
+      <title>ViroTrack Dashboard</title>
+      <link rel="stylesheet" href="stylesheets/mainstyle.css">
+      <link rel="shortcut icon" href="#">
+      <link href="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js"></script>
+      <script src="https://kit.fontawesome.com/d4d81ac12e.js" crossorigin="anonymous"></script>
+      <script src="javascript/mainpage.js" defer></script>
+      <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+      <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+      <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+
+      <!-- note: change this to non-dev version before final submission -->
+      <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+      <script src="javascript/vue.js" defer></script>
+      <script src="javascript/initialiseLocalData.js" defer></script>
+   </head>
+
+   <body>
+      <div id="app">
+
+<!-- HEADER ================================================================-->
+      <header id="header">
+         <!-- logo and name in header -->
+         <div class="float-left mainpage-logo">
+            <img src="images/logo2.png" alt="logo" width="40" height="40">
+         </div>
+
+         <div class="float-right">
+            <button onclick="logout()" class="loginbutton mainpage-profileicon"><i class="fa fa-sign-out fa-2x" aria-hidden="true"></i></button>
+         </div>
+
+         <!--IF LOGGED OUT:
+         <div class="float-right" v-if="!loggedIn">
+            <button onclick="window.location.href='/login.html';" class="loginbutton mainpage-profileicon"><i class="far fa-user fa-2x"></i></button>
+         </div> -->
+
+         <h1 id="loginheader" class="center-align header-title header-text">ViroTrack</h1>
+      </header>
+
+<!-- FIXED MENUS ===========================================================-->
+
+   <!-- NAVIGATION MENU ====================================================-->
+      <nav id="user-tabs-menu" class="fixed-menu">
+
+      <!-- minimize/maximize button ========================================-->
+         <div class="paneltoggle">
+            <button onclick="buttontexttoggle()" id="min" class="button-resize" >
+            <i class="fas fa-minus"></i>
+            </button>
+            <button onclick="buttontexttoggle()" class="defaultdisable button-resize" id="max">
+            <i class="fas fa-plus fa-1.5x"></i>
+            </button>
+         </div>
+
+      <!-- USER TABS =======================================================-->
+         <div id="user-tabs">
+            <div class="nav-spacer"><span id="title1">USER</span></div>
+
+            <!-- REMOVED TAB
+            <button class="nav-tab">
+               <i class="fa fa-map-marker iconcentered" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext1">Heatmap</span>
+            </button>
+            -->
+
+            <button class="nav-tab" onclick="popupshow('history-window')">
+               <i class="fa fa-history" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext2">History</span>
+            </button>
+
+            <button class="nav-tab" onclick="popupshow('profile-window')">
+               <i class="fa fa-user" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext3">My Profile</span>
+            </button>
+         </div>
+
+      <!-- VENUE TABS ======================================================-->
+         <div id="venue-tabs" style="display: none;">
+            <div class="nav-spacer"><span id="title2">VENUE MANAGEMENT</span></div>
+
+            <button class="nav-tab" onclick="popupshow('MyVenue-window')">
+               <i class="fa fa-building" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext4">My Venues</span>
+            </button>
+
+            <!-- REMOVED TAB
+            <button class="nav-tab" onclick="popupshow('VenueHistory-window')">
+               <i class="fa fa-history" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext5">Venue History</span>
+            </button>
+            -->
+
+         </div>
+
+      <!-- ADMIN TABS ======================================================-->
+         <div id="admin-tabs" style="display: none;">
+            <div class="nav-spacer"><span id="title3">ADMINISTRATION</span></div>
+
+            <button class="nav-tab" onclick="popupshow('UserList-window')">
+               <i class="fa fa-users" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext6">User List</span>
+            </button>
+
+            <button class="nav-tab" onclick="popupshow('VenueList-window')">
+               <i class="fa fa-list" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext7">Venue List</span>
+            </button>
+
+            <button class="nav-tab" onclick="popupshow('HotspotList-window')">
+               <i class="fa fa-map-marked-alt" aria-hidden="true"></i><span class="buttontextalignment" id="buttontext8">Hotspot List</span>
+            </button>
+
+         </div>
+
+      </nav>
+
+   <!-- HOTSPOT MENU =======================================================-->
+      <div id="hotspot-info-menu" class="fixed-menu">
+         <h2 class="center-align menu-heading">Nearby Hotspots</h2>
+         <div id="hotspot-list-holder" class="menu-holder">
+
+            <!-- HOTSPOT LIST RENDER TEMPLATE-->
+            <div class="hotspot-list-item" v-for="(hotspot, hotspotI) in hotspotListData" v-on:click="moveMapToSelectedHotspot(hotspotI)">
+               <h3 class="hotspot-name">{{ hotspot.VenueName }}</h3>
+               <div class="hotspot-info">Confirmed cases: {{ hotspot.ConfirmedCases }}</div>
+               <div class="hotspot-info">Reported: {{ hotspot.Created.toDateString() }}</div>
+               <div class="hotspot-info">Expires: {{ hotspot.Expires.toDateString() }}</div>
+            </div>
+
+         </div>
+         <div id="hotspot-button-controls">
+            <button id="check-in-button" class="hotspot-button" onclick="popupshow('checkin-window')">CHECK IN</button><button id="report-button" class="hotspot-button" onclick="popupshow('report-window')">REPORT HOTSPOT</button>
+         </div>
+      </div>
+
+<!-- FOOTER ================================================================-->
+      <footer id="footer">
+         <p class="center-align header-text">© ViroTrack COVID-19 Tracker 2021</p>
+      </footer>
+
+<!-- POP UP WINDOWS ========================================================-->
+
+   <!-- CHECK IN HISTORY ===================================================-->
+      <div id="history-window" class="popup">
+         <div class="window-heading">History</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('history-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="history-menu-content-holder" class="popup-menu-content-holder">
+            <span id="history-menu-heading" class="full-width-list-heading">Check-in History</span>
+            <span class="full-width-list-holder">
+
+               <span v-if="currentUserData.checkInHistory.length < 1">No history found</span>
+
+               <!-- HISTORY LIST RENDERING TEMPLATE -->
+               <span class="check-in-history-list-item-expanded" v-for="(checkIn, checkInI) in currentUserData.checkInHistory" v-on:click="moveMapToSelectedCheckin(checkInI)">
+                  <span class="check-in-history-name-expanded hide-overflow">{{ checkIn.VenueName }}</span>
+                  <span class="check-in-history-time-expanded">{{ checkIn.CheckInTime.toLocaleString() }}</span>
+                  <span class="check-in-history-address-expanded hide-overflow">{{ checkIn.Address }}</span>
+               </span>
+
+            </span>
+         </span>
+
+      </div>
+
+   <!-- MY PROFILE =========================================================-->
+      <div id="profile-window" class="popup">
+         <div class="window-heading">My Profile</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('profile-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="profile-menu-column-holder" class="popup-menu-column-holder">
+
+         <!-- LEFT COLUMN -->
+            <span id="profile-menu-column-left" class="popup-menu-column">
+
+               <span id="profile-details-heading" class="popup-submenu-heading">User Details</span>
+               <span id="profile-details" class="popup-submenu">
+                  <span class="profile-detail-item hide-overflow" v-if="!isHidden">Name: {{ currentUserData.details.FullName }}</span>
+                  <span v-if="isHidden">First Name: <input class="checkin-input2" id="updatefname" :value="currentUserData.details.FirstName"><br></span>
+                  <span v-if="isHidden">Last Name: <input class="checkin-input2" id="updatelname" :value="currentUserData.details.LastName"><br></span>
+                  <span class="profile-detail-item" v-if="!isHidden">ID: {{ currentUserData.details.UserID }}</span>
+                  <span class="profile-detail-item" v-if="!isHidden">Mobile: {{ currentUserData.details.ContactNumber }}</span>
+                  <span v-if="isHidden">Mobile: <input class="checkin-input2" id="updatemobile" :value="currentUserData.details.ContactNumber"><br></span>
+                  <span class="profile-detail-item hide-overflow" v-if="!isHidden">Email: {{ currentUserData.details.EmailAddress }}</span>
+
+                  <span v-if="!isHidden">Address:<br></span>
+                  <span class="profile-detail-item venue-list-address-expanded" v-if="!isHidden">{{ currentUserData.details.UserAddress }}</span>
+                  <span v-if="isHidden">Address:<br> <textarea class="form-input-address" id="updateaddress" :value="currentUserData.details.UserAddress"></textarea><br></span>
+               </span>
+
+               <span class="popup-submenu-spacer"></span>
+
+               <span id="profile-venues-heading" class="popup-submenu-heading">Managed Venues</span>
+               <span id="profile-venues" class="popup-submenu profile-venues">
+
+                  <span v-if="currentUserData.ownedVenues.length < 1">No owned venues</span>
+
+                  <!-- VENUE LIST RENDERING TEMPLATE -->
+                  <span class="venue-list-item" v-for="(venue, venueI) in currentUserData.ownedVenues">
+                     <span class="venue-list-name hide-overflow">{{ venue.VenueName }}</span>
+                     <button class="venue-list-view-button" onclick="popupshow('venue-profile-window')" v-on:click="selectVenueOwned(venueI)">View</button>
+                  </span>
+
+               </span>
+            </span>
+
+         <!-- RIGHT COLUMN -->
+            <span id="profile-menu-column-right" class="popup-menu-column">
+               <span id="profile-check-in-history-heading" class="popup-submenu-heading">Check-in History</span>
+               <span id="profile-check-in-history" class="popup-submenu profile-check-in-history">
+
+                  <span v-if="currentUserData.checkInHistory.length < 1">No history found</span>
+
+                  <!-- CHECK IN LIST RENDERING TEMPLATE -->
+                  <span class="check-in-history-list-item" v-for="checkIn in currentUserData.checkInHistory">
+                     <span class="check-in-history-name hide-overflow">{{ checkIn.VenueName }}</span>
+                     <span class="check-in-history-time">{{ checkIn.CheckInTime.toLocaleString() }}</span>
+                     <span class="check-in-history-address hide-overflow">{{ checkIn.Address }}</span>
+                  </span>
+
+               </span>
+            </span>
+
+         </span>
+
+         <span class="popup-menu-button-controls">
+            <button class="popup-menu-button" v-on:click="isHidden = !isHidden">Edit Profile</button>
+            <button v-if="isHidden" onclick="updateprofile()" v-on:click="isHidden = !isHidden" class="popup-menu-button">Confirm</button>
+            <span style="float:right">Unsubscribe from email notifications <input type="checkbox" id="emailnotifications" onclick="notificationToggle()" onchange="notificationToggle()"></span>
+            <br>
+            <label id="error-updateprofile" style="font-size:14px"></label>
+         </span>
+      </div>
+
+   <!-- MY VENUES ==========================================================-->
+      <div id="MyVenue-window" class="popup">
+         <div class="window-heading">My Venues</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('MyVenue-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="my-venues-menu-column-holder" class="popup-menu-column-holder">
+
+         <!-- LEFT COLUMN -->
+            <span id="my-venues-menu-column-left" class="popup-menu-column">
+               <span id="my-venues-list-heading" class="full-width-list-heading">My Venues</span>
+               <span id="my-venues-menu-list-holder" class="full-width-list-holder">
+
+                  <span v-if="currentUserData.ownedVenues.length < 1">No owned venues</span>
+
+                  <!-- MY VENUES LIST RENDERING TEMPLATE -->
+                  <span class="venue-list-item-expanded" v-for="(venue, venueI) in currentUserData.ownedVenues">
+                     <span class="venue-list-name-expanded hide-overflow">{{ venue.VenueName }}</span>
+                     <span>Address:<br/></span>
+                     <span class="venue-list-address-expanded">{{ venue.Address }}</span>
+                     <!--<span class="hide-overflow">Total check ins: XX</span>-->
+
+                     <span class="venue-list-item-button-holder">
+                        <button class="submenu-button" onclick="popupshow('venue-profile-window')" v-on:click="selectVenueOwned(venueI)">View</button>
+                        <button class="submenu-button" v-on:click="loadMyVenueHistory(venueI)">History</button>
+                        <button class="submenu-button edit-button" onclick="openForm('edit-venue-form')" v-on:click="loadEditVenueForm(venueI)">Edit</button>
+                     </span>
+                  </span>
+
+               </span>
+            </span>
+
+         <!-- RIGHT COLUMN -->
+            <span id="my-venues-menu-column-right" class="popup-menu-column">
+                <span id="my-venues-check-in-heading" class="full-width-list-heading">Venue History</span>
+                <span id="my-venues-check-in-spacer" class="full-width-list-spacer hide-overflow">{{ currentUserData.selectedVenue.name }}</span>
+                <span id="my-venues-check-in-list-holder" class="full-width-list-holder">
+
+                    <span v-if="currentUserData.selectedVenue.checkInHistory.length < 1">No history found</span>
+
+                    <!-- VENUE HISTORY RENDERING TEMPLATE -->
+                    <span class="check-in-history-list-item" v-for="checkIn in currentUserData.selectedVenue.checkInHistory">
+                        <span class="check-in-history-name hide-overflow">{{ checkIn.FullName }}</span>
+                        <span class="check-in-history-time">{{ checkIn.CheckInTime.toLocaleString() }}</span>
+                    </span>
+
+               </span>
+            </span>
+
+         </span>
+
+         <span class="popup-menu-button-controls">
+            <button class="popup-menu-button" onclick="openForm('add-venue-form')">Add a venue</button>
+         </span>
+
+      </div>
+
+   <!-- VENUE HISTORY ======================================================-->
+      <div id="VenueHistory-window" class="popup">
+         <div class="window-heading">Venue History</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('VenueHistory-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+      </div>
+
+
+   <!-- USER LIST ==========================================================-->
+      <div id="UserList-window" class="popup">
+         <div class="window-heading">User List</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('UserList-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="user-list-menu-content-holder" class="popup-menu-content-holder">
+            <span id="user-list-menu-heading" class="full-width-list-heading">User List</span>
+            <span class="full-width-list-holder">
+
+               <span class="searchbar-spacer"></span>
+               <span class="item-list-searchbar">
+                  <input id="user-searchbar" class="item-list-searchbox" type="search">
+                  <button class="item-list-search-button submenu-button" onclick="loadUserList()">Search</button>
+               </span>
+
+               <span v-if="adminUserList.length < 1">No results found</span>
+
+               <!-- USER LIST RENDERING TEMPLATE -->
+               <span class="popup-list-item" v-for="(user, userI) in adminUserList">
+                  <span class="user-list-name popup-list-info-block hide-overflow">{{ user.FullName }}</span>
+                  <span class="user-list-id popup-list-info-block hide-overflow">ID: {{ user.UserID }}</span>
+                  <span class="user-list-permission popup-list-info-block hide-overflow">{{ user.PermissionLevelName }}</span>
+                  <button class="popup-list-view-button popup-list-info-block" onclick="popupshow('SelectedProfile-window');" v-on:click="selectUser(userI)">View</button>
+               </span>
+
+            </span>
+         </span>
+
+      </div>
+
+   <!-- SELECTED PROFILE (same as MY PROFILE but for selected user instead) -->
+      <div id="selected-profile-window" class="popup">
+         <div class="window-heading">User Profile</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('selected-profile-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="selected-profile-menu-column-holder" class="popup-menu-column-holder">
+
+         <!-- LEFT COLUMN -->
+            <span id="selected-profile-menu-column-left" class="popup-menu-column">
+
+               <span id="selected-profile-details-heading" class="popup-submenu-heading">User Details</span>
+               <span id="selected-profile-details" class="popup-submenu">
+                  <span class="profile-detail-item hide-overflow">Name: {{ selectedUserData.details.FullName }}</span>
+                  <span class="profile-detail-item">ID: {{ selectedUserData.details.UserID }}</span>
+                  <span class="profile-detail-item">Mobile: {{ selectedUserData.details.ContactNumber }}</span>
+                  <span class="profile-detail-item hide-overflow">Email: {{ selectedUserData.details.EmailAddress }}</span>
+                  <span>Address:<br></span>
+                  <span class="profile-detail-item venue-list-address-expanded">{{ selectedUserData.details.UserAddress }}</span>
+               </span>
+
+               <span class="popup-submenu-spacer"></span>
+
+               <span id="selected-profile-venues-heading" class="popup-submenu-heading">Managed Venues</span>
+               <span id="selected-profile-venues" class="popup-submenu profile-venues">
+
+                  <span v-if="selectedUserData.ownedVenues.length < 1">No owned venues</span>
+
+                  <!-- VENUE LIST RENDERING TEMPLATE -->
+                  <span class="venue-list-item" v-for="(venue, venueI) in selectedUserData.ownedVenues">
+                     <span class="venue-list-name hide-overflow">{{ venue.VenueName }}</span>
+                     <button class="venue-list-view-button" onclick="popupshow('venue-profile-window')" v-on:click="selectVenueProfile(venueI)">View</button>
+                  </span>
+
+               </span>
+            </span>
+
+         <!-- RIGHT COLUMN -->
+            <span id="selected-profile-menu-column-right" class="popup-menu-column">
+               <span id="selected-profile-check-in-history-heading" class="popup-submenu-heading">Check-in History</span>
+               <span id="selected-profile-check-in-history" class="popup-submenu profile-check-in-history">
+
+                  <span v-if="selectedUserData.checkInHistory.length < 1">No history found</span>
+
+                  <!-- CHECK IN LIST RENDERING TEMPLATE -->
+                  <span class="check-in-history-list-item" v-for="checkIn in selectedUserData.checkInHistory">
+                     <span class="check-in-history-name hide-overflow">{{ checkIn.VenueName }}</span>
+                     <span class="check-in-history-time">{{ checkIn.CheckInTime.toLocaleString() }}</span>
+                     <span class="check-in-history-address hide-overflow">{{ checkIn.Address }}</span>
+                  </span>
+
+               </span>
+            </span>
+
+         </span>
+
+         <span class="popup-menu-button-controls">
+            <button class="popup-menu-button" onclick="DeleteUser()">Delete User</button>
+            <label style="float:right">Select Permission Level:  <select name="permissionLevel" id="permissionLevel" class="permissiondropdown" onchange="permissionToggle()">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               </select>
+            </label>
+         </span>
+      </div>
+
+
+   <!-- VENUE LIST =========================================================-->
+      <div id="VenueList-window" class="popup">
+         <div class="window-heading">Venue List</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('VenueList-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="venue-list-menu-content-holder" class="popup-menu-content-holder">
+            <span id="venue-list-menu-heading" class="full-width-list-heading">Venue List</span>
+            <span class="full-width-list-holder">
+
+               <span class="searchbar-spacer"></span>
+               <span class="item-list-searchbar">
+                  <input id="venue-searchbar" class="item-list-searchbox" type="search">
+                  <button class="item-list-search-button submenu-button" onclick="loadVenueList()">Search</button>
+               </span>
+
+               <span v-if="adminVenueList.length < 1">No results found</span>
+
+               <!-- VENUE LIST RENDERING TEMPLATE -->
+               <span class="popup-list-item" v-for="(venue, venueI) in adminVenueList">
+                  <span class="venue-list-menu-name popup-list-info-block hide-overflow">{{ venue.VenueName }}</span>
+                  <span class="venue-list-menu-id popup-list-info-block hide-overflow">ID: {{ venue.VenueID }}</span>
+                  <button class="popup-list-view-button popup-list-info-block" onclick="popupshow('venue-profile-window')" v-on:click="selectVenue(venueI)">View</button>
+                  <span class="check-in-history-address-expanded hide-overflow">{{ venue.Address }}</span>
+               </span>
+
+            </span>
+         </span>
+
+      </div>
+
+   <!-- VENUE PROFILE (same as MY PROFILE but for selected venue instead) ==-->
+      <div id="venue-profile-window" class="popup">
+         <div class="window-heading">Venue Profile</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('venue-profile-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="venue-profile-menu-column-holder" class="popup-menu-column-holder">
+
+         <!-- LEFT COLUMN -->
+            <span id="venue-profile-menu-column-left" class="popup-menu-column">
+
+               <span id="venue-profile-details-heading" class="popup-submenu-heading">Venue Details</span>
+               <span id="venue-profile-details" class="popup-submenu">
+                  <span class="profile-detail-item hide-overflow">Name: {{ selectedVenueData.details.VenueName }}</span>
+                  <span class="profile-detail-item">ID: {{ selectedVenueData.id }}</span>
+                  <span>Address:<br></span>
+                  <span class="venue-list-address-expanded">{{ selectedVenueData.details.Address }}</span>
+                  <span class="profile-detail-item">Check in code: {{ selectedVenueData.details.CheckInCode }}</span>
+
+               </span>
+
+               <span class="popup-submenu-spacer"></span>
+
+               <span id="venue-profile-owner-heading" class="popup-submenu-heading">Owner Details</span>
+               <span id="venue-profile-owner-details" class="popup-submenu">
+                  <span class="profile-detail-item hide-overflow">Name: {{ selectedVenueData.details.OwnerName }}</span>
+                  <span class="profile-detail-item">ID: {{ selectedVenueData.details.OwnerID }}</span>
+                  <button class="popup-list-view-button profile-view-button" onclick="popupshow('SelectedProfile-window'); viewUserProfile()">View Profile</button>
+
+
+               </span>
+
+               <span class="popup-submenu-spacer"></span>
+
+            </span>
+
+         <!-- RIGHT COLUMN -->
+            <span id="venue-profile-menu-column-right" class="popup-menu-column">
+               <span id="venue-profile-check-in-history-heading" class="popup-submenu-heading">Check-in History</span>
+               <span id="venue-profile-check-in-history" class="popup-submenu profile-check-in-history">
+
+                  <!-- CHECK IN LIST RENDERING TEMPLATE -->
+                  <span class="check-in-history-list-item" v-for="checkIn in selectedVenueData.checkInHistory">
+                     <span class="check-in-history-name hide-overflow">{{ checkIn.FullName }}</span>
+                     <span class="check-in-history-time">{{ checkIn.CheckInTime.toLocaleString() }}</span>
+                  </span>
+
+               </span>
+            </span>
+
+         </span>
+
+         <span class="popup-menu-button-controls">
+            <button class="popup-menu-button" onclick="DeleteVenue()">Delete Venue</button>
+         </span>
+      </div>
+
+   <!-- HOTSPOT LIST ========================================================-->
+      <div id="HotspotList-window" class="popup">
+         <div class="window-heading">Hotspot List</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('HotspotList-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="hotspot-list-menu-content-holder" class="popup-menu-content-holder">
+            <span id="hotspot-list-menu-heading" class="full-width-list-heading">Hotspot List</span>
+            <span class="full-width-list-holder">
+
+               <span class="searchbar-spacer"></span>
+               <span class="item-list-searchbar">
+                  <input id="hotspot-searchbar" class="item-list-searchbox" type="search">
+                  <button class="item-list-search-button submenu-button" onclick="loadHotspotList()">Search</button>
+               </span>
+
+               <span v-if="hotspotListData.length < 1">No results found</span>
+
+               <!-- HOTSPOT LIST RENDERING TEMPLATE -->
+               <span class="hotspot-list-item-expanded" v-for="(hotspot, hotspotI) in hotspotListData">
+                  <span class="block-span" v-on:click="moveMapToSelectedHotspot(hotspotI)">
+                     <span class="hotspot-list-detail-bold hide-overflow">{{ hotspot.VenueName }}</span>
+                     <span class="hotspot-list-detail hide-overflow">{{ hotspot.Address }}</span>
+                  </span>
+                  <span class="block-span" v-on:click="moveMapToSelectedHotspot(hotspotI)">
+                     <span class="hotspot-list-detail">Created: {{ hotspot.Created.toDateString() }}</span>
+                     <span class="hotspot-list-detail">Expires: {{ hotspot.Expires.toDateString() }}</span>
+                  </span>
+                  <span class="block-span">
+                     <button class="button2 hotspot-delete-button" v-on:click="deleteHotspot(hotspotI, hotspot.VenueName);">Delete</button>
+                  </span>
+               </span>
+
+            </span>
+         </span>
+
+         <span class="popup-menu-button-controls">
+            <button class="popup-menu-button" onclick="openForm('create-hotspot-form')">Create hotspot</button>
+         </span>
+
+      </div>
+
+   <!-- CHECK IN ===========================================================-->
+      <div id="checkin-window" class="popup">
+         <div class="window-heading">Check-In</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('checkin-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <span id="checkin-menu-content-holder" class="popup-menu-content-holder">
+            <span id="checkin-menu-heading" class="full-width-list-heading">Check-In</span>
+            <span class="full-width-holder">
+
+               <span class="block-span center-align">
+                  <br>
+                  <span id="check-in-status" class="block-span">Enter a check in code below to check in</span>
+                  <input id="checkin-input" placeholder="Check-in code" class="Spacing40 checkin-input"><br><br>
+                  <button class="button2 Spacing20 checkin-button" onclick="handleCheckIn()">Check in</button><br><br>
+                  <!--<span class="separator Spacing40">or</span>
+                  <span class="icon-section"></span>
+                  <span>QR Code</span><br><br>
+                  <button><i class="fas fa-qrcode fa-6x" ></i></button>
+                  -->
+               </span>
+
+            </span>
+         </span>
+
+      </div>
+
+   <!-- REPORT HOTSPOT =====================================================-->
+      <div id="report-window" class="popup">
+         <div class="window-heading">Report</div>
+         <div class="iconTopRight">
+            <button onclick="popuphide('report-window')">
+            <i class="fas fa-times fa-2x windowcloseicon"></i>
+            </button>
+         </div>
+
+         <div id="report-menu-content-holder" class="popup-menu-content-holder">
+            <span id="report-menu-heading" class="full-width-list-heading">Report Hotspot</span>
+            <div class="full-width-holder">
+
+            <div class="Spacing40 Spacingleft20">
+               <!-- mailto:someone@example.com <form method="POST" action="send" enctype="text/plain" id="reportform"> -->
+               <form method="POST" action="users/reportHotspot">
+                  <label class="login-input-label">First Name:</label><br>
+                  <input class="report-hotspot-input" type="text" id="formfirstname" placeholder="John" name="Firstname"><br><br>
+                  <label class="login-input-label">Last Name:</label><br>
+                  <input class="report-hotspot-input" type="text" id="formlastname" placeholder="Doe" name="Lastname"><br><br>
+                  <label class="login-input-label">Venue ID:</label><br>
+                  <input class="report-hotspot-input" type="text" id="formvenueID" placeholder="" name="VenueID"><br><br>
+                  <label class="login-input-label">Message:</label><br>
+                  <div>
+                  <textarea class="report-hotspot-messagebox" rows="4" cols="50" id="messagebody" name="messagebody" placeholder="Enter text here..."></textarea>
+                  </div>
+                  <input class="button2" type="submit" value="Submit">
+                  <input class="button2" type="reset" value="Reset">
+               </form>
+            </div>
+
+            </div>
+         </div>
+
+      </div>
+
+<!-- FORMS =================================================================-->
+
+      <div id="create-hotspot-form" class="form">
+         <div class="form-heading">Create Hotspot</div>
+            <div class="center-align form-content-holder">
+               <span id="create-hotspot-error-textbox" class="login-small-text"></span><br>
+
+               <label for="create-hotspot-venueID" class="login-input-label">Venue ID</label><br>
+               <input id="create-hotspot-venueID" placeholder="Venue ID" class="form-input"><br>
+
+               <label for="create-hotspot-cases" class="login-input-label">Confirmed Cases</label><br>
+               <input id="create-hotspot-cases" class="form-input"><br>
+
+               <label for="create-hotspot-expires" class="login-input-label">Expiry Date</label><br>
+               <input id="create-hotspot-expires" class="form-input" type="date"><br>
+
+               <label for="create-hotspot-description" class="login-input-label">Description</label><br>
+               <textarea id="create-hotspot-description" class="form-input-description"></textarea><br>
+            </div>
+            <div class="center-align form-submit-holder">
+               <button class="button2 full-width-button" onclick="createHotspot()">Submit</button>
+               <button class="button2 full-width-button" onclick="closeForm('create-hotspot-form')">Cancel</button>
+            </div>
+      </div>
+
+      <div id="edit-venue-form" class="form">
+         <div class="form-heading">Edit Venue</div>
+            <div class="center-align form-content-holder">
+               <span id="edit-venue-error-textbox" class="login-small-text"></span><br>
+
+               <label for="edit-venue-venueName" class="login-input-label">Venue Name</label><br>
+               <input id="edit-venue-venueName" class="form-input"><br>
+
+               <label for="edit-venue-address" class="login-input-label">Venue Address</label><br>
+               <textarea id="edit-venue-address" class="form-input-address"></textarea><br>
+
+               <span class="name-holder">
+                    <span class="block-span">
+                        <label for="edit-venue-latitude" class="login-input-label">Latitude</label><br>
+                        <input id="edit-venue-latitude" class="form-input" type="number"><br>
+                    </span>
+                    <span class="block-span">
+                        <label for="edit-venue-longitude" class="login-input-label">Longitude</label><br>
+                        <input id="edit-venue-longitude" class="form-input" type="number"><br>
+                    </span>
+                </span>
+            </div>
+            <div class="center-align form-submit-holder">
+               <button class="button2 full-width-button" onclick="submitEditedVenue()">Submit</button>
+               <button class="button2 full-width-button" onclick="closeForm('edit-venue-form')">Cancel</button>
+            </div>
+      </div>
+
+      <div id="add-venue-form" class="form">
+         <div class="form-heading">Add Venue</div>
+            <div class="center-align form-content-holder">
+               <span id="add-venue-error-textbox" class="login-small-text"></span><br>
+
+               <label for="add-venue-venueName" class="login-input-label">Venue Name</label><br>
+               <input id="add-venue-venueName" class="form-input"><br>
+
+               <label for="add-venue-address" class="login-input-label">Venue Address</label><br>
+               <textarea id="add-venue-address" class="form-input-address"></textarea><br>
+
+               <span class="name-holder">
+                    <span class="block-span">
+                        <label for="add-venue-latitude" class="login-input-label">Latitude</label><br>
+                        <input id="add-venue-latitude" class="form-input" type="number"><br>
+                    </span>
+                    <span class="block-span">
+                        <label for="add-venue-longitude" class="login-input-label">Longitude</label><br>
+                        <input id="add-venue-longitude" class="form-input" type="number"><br>
+                    </span>
+                </span>
+            </div>
+            <div class="center-align form-submit-holder">
+               <button class="button2 full-width-button" onclick="addVenue()">Submit</button>
+               <button class="button2 full-width-button" onclick="closeForm('add-venue-form')">Cancel</button>
+            </div>
+      </div>
+
+
+
+
+      </div> <!-- end of #app div (map not compatible with vue) -->
+
+<!-- MAP DISPLAY ===========================================================-->
+      <div id="map-holder">
+         <span class="map-spacer" id='map'></span>
+         <script>
+            mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtaWFtMTIzNCIsImEiOiJja29jaDZieWMwM3FtMm90a3BuOWIyM210In0.HHC0DfkIco-ZY0K56yyhww';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                // Interactive map style
+                style: 'mapbox://styles/mapbox/streets-v11',
+                // Default location(currently: Adelaide)
+                center: [138.599503,-34.921230],
+                // Default map zoom
+                zoom: 11,
+                logoPosition:'bottom-right',
+            });
+
+            // Map zoom in/out
+            var coordinatesGeocoder = function (query) {
+                var matches = query.match(/^[ ]*(?:Lat: )?(-?\d+\.?\d*)[, ]+(?:Lng: )?(-?\d+\.?\d*)[ ]*$/i);
+                if (!matches) {
+                  return null;
+                }
+
+                function coordinateFeature(lng, lat) {
+                    return {
+                        center: [lng, lat],
+                        geometry: {
+                        type: 'Point',
+                        coordinates: [lng, lat]
+                        },
+                        place_name: 'Lat: ' + lat + ' Lng: ' + lng,
+                        place_type: ['coordinate'],
+                        properties: {},
+                        type: 'Feature'
+                    };
+                }
+                var coord1 = Number(matches[1]);
+                var coord2 = Number(matches[2]);
+                var geocodes = [];
+                if (coord1 < -90 || coord1 > 90) {
+                    // long,lat as inputs
+                    geocodes.push(coordinateFeature(coord1, coord2));
+                }
+                if (coord2 < -90 || coord2 > 90) {
+                    // long,lat as inputs
+                    geocodes.push(coordinateFeature(coord2, coord1));
+                }
+                if (geocodes.length === 0) {
+                    // long,lat or lat,long as inputs
+                    geocodes.push(coordinateFeature(coord1, coord2));
+                    geocodes.push(coordinateFeature(coord2, coord1));
+                }
+                return geocodes;
+            };
+
+            // Searchable location bar
+               map.addControl(
+               new MapboxGeocoder({
+                  accessToken: mapboxgl.accessToken,
+                  localGeocoder: coordinatesGeocoder,
+                  zoom: 4,
+                  placeholder: 'Try: Adelaide',
+                  mapboxgl: mapboxgl
+              })
+            );
+            var nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-right');
+         </script>
+      </div>
+
+   </body>
+</html>

@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ $# -gt 0 ]; then
+    mysqldump -h 127.0.0.1 covid_tracking_db > database/backups/$1.sql
+    printf "Created database/backups/$1.sql\n"
+else
+    printf "No filename provided\n"
+fi

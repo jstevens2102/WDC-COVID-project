@@ -1,0 +1,979 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: 0;
+    min-height: 100%;
+    font-family: arial;
+}
+
+header, footer {
+    background-color: #375c6b;
+    height: 50px;
+    display: block;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    z-index: 3;
+}
+
+.header-title {
+    text-align: center;
+    vertical-align: middle;
+    margin: 0;
+    padding: 0;
+    padding-top: 5px;
+}
+
+.header-text {
+    color: white;
+}
+
+footer {
+    bottom: 0;
+}
+
+header {
+    top: 0;
+}
+
+.center-align {
+    text-align: center;
+}
+
+.left-align {
+    text-align: left;
+}
+
+.right-align {
+    text-align: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.nav-tab {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 1.2em;
+}
+
+.nav-spacer {
+    display: block;
+    width: 180px;
+    text-align: center;
+    margin-top: 1.2em;
+    font-weight: bold;
+}
+
+.fixed-menu {
+    position: fixed;
+    display: block;
+    margin-top: 50px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #bfc5c7;
+    z-index: 2;
+}
+
+#user-tabs-menu {
+    float: left;
+    top: 0;
+    left: 0;
+
+    width: 200px;
+    height: 100%;
+}
+
+#hotspot-info-menu {
+    float: right;
+    top: 0;
+    right: 0;
+
+    width: 300px;
+    height: 100%;
+}
+
+.menu-holder {
+    background-color: white;
+    margin: 10px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+.menu-heading {
+    margin: 5px;
+    padding: 0px;
+}
+
+#hotspot-list-holder {
+    height: 70%;
+}
+
+.hotspot-list-item {
+    width: 90%;
+    padding: 0% 2.5%;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin: 5px;
+}
+
+.hotspot-list-item:hover {
+    background-color: lightgrey;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
+
+.hotspot-name {
+    font-size: 1em;
+    display: block;
+    margin: 5px;
+}
+
+.hotspot-info {
+    font-size: 0.8em;
+    margin: 5px;
+}
+
+#hotspot-button-controls {
+    margin: 10px;
+    padding: 0px;
+}
+
+.hotspot-button {
+    width: 45%;
+    height: 50px;
+    margin: 2.5%;
+    vertical-align: top;
+    border: 1px solid black;
+    border-radius: 3px;
+    color: white;
+}
+
+#check-in-button {
+    background-color: darkgreen;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+.checkin-input {
+    height: 22px;
+    width: 40%;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+.checkin-input2 {
+    height: 22px;
+    width: 60%;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+}
+
+.checkin-button {
+    width: 35%;
+}
+
+#report-button {
+    background-color: red;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+#map-holder {
+    width: 100vw;
+}
+
+.map-spacer{
+    display: block;
+    width: calc(100% - 300px);
+    height: calc(100vh - 100px);
+    margin-right: 300px;
+}
+
+#login {
+    margin: 80px auto 0;
+    width: 550px;
+}
+
+.input-holder {
+    border: 3px solid grey;
+    border-top: 0px;
+    border-radius: 0px 0px 15px 15px;
+    padding-top: 5%;
+    padding-left: 20%;
+    padding-right: 20%;
+    height: 550px;
+    box-sizing: border-box;
+}
+
+.input-holder > button {
+    margin-left: 10%;
+}
+
+.login-input-label {
+    font-size: 0.8em;
+    font-weight: bold;
+    width: 100%;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+
+.login-input {
+    height: 22px;
+    width: 100%;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-family: inherit; font-size: inherit;
+}
+
+.address-input {
+  height: 40px;
+  font-size: 1em;
+  font-family: inherit; font-size: inherit;
+  resize: none;
+}
+
+.required-field {
+  color: red;
+  font-weight: bold;
+}
+
+.success-text {
+  color: green;
+  font-weight: bold;
+}
+
+.login-small-text {
+    font-size: 0.8em;
+}
+
+.showpassword {
+    vertical-align: middle;
+}
+
+.name-holder {
+  display: grid;
+  grid-template-columns: 48% 48%;
+  grid-gap: 4%;
+}
+
+.button1 {
+    color: white;
+    background-color: grey;
+    height:30px;
+    width:180px;
+    border-radius: 5px 5px 5px 5px;
+    border-color:darkgrey;
+    border-width:3px;
+}
+.button1:hover{
+    opacity: 0.9;
+}
+
+#loginheader{
+    background-color:  #375c6b;
+    height: 50px;
+    color: white;
+    padding-right:75px;
+    border-radius: 15px 15px 0px 0px;
+}
+.login-logo{
+
+    margin:10px;
+}
+.mainpage-logo{
+
+    margin:5px;
+}
+
+.icon-facebook{
+    color:#4267B2;
+}
+
+.icon-google{
+  background: conic-gradient(from -45deg, #ea4335 110deg, #4285f4 90deg 180deg, #34a853 180deg 270deg, #fbbc05 270deg) 73% 55%/150% 150% no-repeat;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.icon-section{
+    margin:10px;
+    padding-top:2.5px;
+    display: block;
+}
+
+.fab:hover{
+    opacity: 0.8;
+}
+
+.popup{
+    position:fixed;
+    display:none;
+    margin-left:calc(50vw - 300px);
+    margin-top:calc(50vh - 360px);
+    width: 600px;
+    height:600px;
+    background-color: white;
+    z-index: 3;
+    border: 1px solid grey;
+    border-radius: 5px 5px 5px 5px;
+    padding: 8px;
+}
+
+.windowcloseicon{
+    color:red;
+}
+
+.iconTopRight{
+    margin-top:-0.2%;
+    margin-left:93.7%;
+    padding-left:5px;
+}
+
+.exiticon{
+    border: 1px solid grey;
+    border-radius: 8px 8px 8px 8px;
+}
+
+.window-heading{
+    position:fixed;
+    text-align:center;
+    margin-left:255px;
+    font-weight:bold;
+    font-size:20px;
+}
+.paneltoggle{
+float:right;
+}
+
+
+.buttontextalignment{
+    margin-left:10px;
+}
+
+.iconcentered{
+    display:block;
+    margin:auto;
+}
+
+.defaultdisable{
+    display:none;
+    margin-left:5px;
+}
+
+.button-resize{
+    width:35px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #000;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .5em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .5em;
+}
+
+.popup-submenu {
+  width: 290px;
+  border: 1px solid grey;
+  border-radius: 0px 0px 5px 5px;
+  display: block;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.popup-submenu-heading {
+  width: 290px;
+  border: 1px solid grey;
+  border-bottom: 0px;
+  border-radius: 5px 5px 0px 0px;;
+  display: block;
+  box-sizing: border-box;
+  padding: 2px;
+  text-align: center;
+  background-color: #375c6b;
+  color: white;
+}
+
+.popup-submenu-spacer {
+  display: block;
+  height: 10px;
+}
+
+.popup-menu-column {
+  width: 295px;
+}
+
+.popup-menu-column-holder {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 295px 295px;
+  grid-gap: 10px;
+  height: 480px;
+}
+
+.popup-menu-content-holder {
+  margin-top: 10px;
+  display: block;
+  height: 480px;
+}
+
+.popup-menu-button-controls {
+  display: block;
+  margin-top: 30px;
+  height: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  box-sizing: border-box;
+}
+
+.popup-menu-button {
+  display: inline;
+  height: 80%;
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  border: 1px solid grey;
+  border-radius: 3px;
+  vertical-align: middle;
+  background-color: lightgrey;
+}
+
+.popup-menu-button:hover {
+    font-size: 1em;
+    background-color: #7bb3c9;
+}
+
+.button2 {
+  padding: 5px;
+  box-sizing: border-box;
+  font-size: 1em;
+  border: 1px solid grey;
+  border-radius: 3px;
+  vertical-align: middle;
+  background-color: lightgrey;
+}
+
+.button2:hover {
+    font-size: 1em;
+    background-color: #7bb3c9;
+}
+
+.wide-button {
+  width: 50%;
+}
+
+.full-width-button {
+  width: 100%;
+}
+
+.profile-detail-item {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.profile-check-in-history {
+  height: 480px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.profile-venues {
+  height: 242px;
+}
+
+.check-in-history-list-item {
+  display: block;
+  width: auto;
+  box-sizing: border-box;
+  padding: 5px;
+  margin-bottom: 3px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.check-in-history-name {
+  display: block;
+  font-size: 1.1em;
+  height: 21px;
+}
+
+.check-in-history-time {
+  display: block;
+  font-size: 1em;
+  height: 18px;
+}
+
+.check-in-history-address {
+  display: block;
+  font-size: 1em;
+  height: 18px;
+}
+
+.check-in-history-list-item-expanded {
+  display: block;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 3px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.check-in-history-list-item-expanded:hover {
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.check-in-history-name-expanded {
+  display: inline-block;
+  height: 18px;
+  width: 58%;
+  vertical-align: middle;
+  font-size: 1em;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.check-in-history-time-expanded {
+  display: inline-block;
+  height: 18px;
+  width: 38%;
+  vertical-align: middle;
+  text-align: right;
+  font-size: 1em;
+  overflow: hidden;
+}
+
+.check-in-history-address-expanded {
+  display: block;
+  height: 18px;
+  vertical-align: middle;
+  font-size: 1em;
+}
+
+.venue-list-item {
+  display: block;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 3px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.venue-list-name {
+  display: inline-block;
+  width: 76%;
+  box-sizing: border-box;
+  vertical-align: middle;
+  font-size: 1em;
+}
+
+.venue-list-view-button {
+  display: inline-block;
+  width: 22%;
+  box-sizing: border-box;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 2px;
+  font-size: 1em;
+}
+
+.venue-list-view-button:hover {
+    font-size: 1em;
+    background-color: #7bb3c9;
+}
+
+.venue-list-item-expanded {
+  display: block;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.venue-list-name-expanded {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.venue-list-address-expanded {
+    display: block;
+    overflow-y: scroll;
+    height: 60px;
+    border: 1px solid grey;
+    margin-bottom: 2px;
+}
+
+.venue-list-item-button-holder {
+    display: grid;
+    grid-template-columns: 32% 32% 32%;
+    grid-gap: 1.5%;
+}
+
+.mainpage-profileicon{
+     margin:10px;
+     color:white;
+}
+
+.loginbutton{
+        background-color: #375c6b;
+        outline: none;
+        border: none;
+}
+
+.full-width-list-heading {
+  border: 1px solid grey;
+  border-bottom: 0px;
+  border-radius: 5px 5px 0px 0px;;
+  display: block;
+  box-sizing: border-box;
+  padding: 2px;
+  text-align: center;
+  background-color: #375c6b;
+  color: white;
+}
+
+.full-width-list-holder {
+    display: block;
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 0px 0px 3px 3px;
+    height: 457px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.full-width-holder {
+    display: block;
+    padding: 10px;
+    border: 1px solid grey;
+    border-radius: 0px 0px 3px 3px;
+    height: 457px;
+}
+
+
+.full-width-list-spacer {
+    display: block;
+    text-align: center;
+    font-weight: bold;
+    padding: 1px 10px;
+    border: 1px solid grey;
+    border-bottom: 0px;
+    height: 23px;
+}
+
+.Spacing80{
+    margin-top:80px;
+}
+.Spacing40{
+    margin-top:40px;
+}
+.Spacing20{
+    margin-top:20px;
+}
+.Spacingleft20{
+    margin-left:20px;
+}
+
+.submenu-button {
+    display: block;
+    margin-top: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 2px;
+    background-color: lightgrey;
+}
+
+.submenu-button:hover {
+    font-size: 1em;
+    background-color: #7bb3c9;
+}
+
+.edit-button {
+    background-color: #3fbf34;
+    color: black;
+}
+
+.edit-button:hover {
+    background-color: #7ad672;
+}
+
+
+#my-venues-check-in-list-holder {
+  height: 431px;
+}
+
+.hide-overflow {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-list-searchbar {
+  position: absolute;
+  right: 35px;
+  top: 75px;
+}
+
+.item-list-searchbox {
+  width: 150px;
+  height: 23px;
+  display: inline;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.item-list-search-button {
+  width: 70px;
+  height: 23px;
+  display: inline;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.searchbar-spacer {
+    display: block;
+    height: 30px;
+    border-bottom: 1px solid grey;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.popup-list-item {
+  display: block;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 3px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.popup-list-info-block {
+  display: inline-block;
+  height: 18px;
+  vertical-align: middle;
+  font-size: 1em;
+}
+
+.user-list-name {
+  width: 41%;
+  font-weight: bold;
+}
+
+.user-list-id {
+  width: 20%;
+}
+
+.user-list-permission {
+  width: 25%;
+  text-align: center;
+}
+
+.popup-list-view-button {
+  font-size: 1em;
+  width: 10%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 2px;
+  margin-left: 5px;
+}
+
+.popup-list-view-button:hover {
+    font-size: 1em;
+    background-color: #7bb3c9;
+}
+
+.venue-list-menu-name {
+  width: 66%;
+  font-weight: bold;
+}
+
+.venue-list-menu-id {
+  width: 20%;
+}
+
+.block-span {
+    display: block;
+}
+
+.profile-view-button {
+    width: 50%;
+    text-align: center;
+    margin-left: 70px;
+}
+
+.hotspot-marker-header {
+    margin: 0px;
+    margin-bottom: 3px;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+}
+
+.marker-subheading {
+    font-weight: bold;
+}
+
+.hotspot-list-item-expanded {
+  display: grid;
+  grid-template-columns: 48% 36% 14%;
+  grid-gap: 1%;
+  width: auto;
+  padding: 5px;
+  margin-bottom: 3px;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.hotspot-list-item-expanded:hover {
+  background-color: lightgrey;
+  border: 1px solid grey;
+  border-radius: 3px;
+}
+
+.hotspot-list-detail {
+  display: block;
+  height: 18px;
+  vertical-align: middle;
+  font-size: 1em;
+  overflow: hidden;
+}
+
+.hotspot-list-detail-bold {
+  display: block;
+  height: 18px;
+  vertical-align: middle;
+  font-size: 1em;
+  overflow: hidden;
+  font-weight: bold;
+}
+
+.hotspot-delete-button {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.form{
+    position:fixed;
+    display:none;
+    margin-left:calc(50vw - 175px);
+    margin-top:calc(50vh - 340px);
+    width: 350px;
+    height: 550px;
+    background-color: white;
+    z-index: 5;
+    border: 1px solid grey;
+    border-radius: 5px 5px 5px 5px;
+    padding: 8px;
+}
+
+.form-content-holder {
+    padding: 50px;
+    padding-top: 10px;
+    height: 85%;
+    box-sizing: border-box;
+}
+
+.form-submit-holder {
+    display: grid;
+    grid-template-columns: 45% 45%;
+    grid-gap: 10%;
+    padding: 15px 50px 10px;
+    height: 10%;
+    box-sizing: border-box;
+}
+
+.form-heading {
+    text-align:center;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.form-input {
+    height: 22px;
+    width: 100%;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-family: inherit; font-size: inherit;
+    box-sizing: border-box;
+}
+
+.form-input-address {
+    height: 40px;
+    font-size: 1em;
+    font-family: inherit; font-size: inherit;
+    resize: none;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.form-input-description {
+    height: 80px;
+    font-size: 1em;
+    font-family: inherit; font-size: inherit;
+    resize: none;
+    width: 100%;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+.permissiondropdown{
+    width:50px;
+    height:30px;
+}
+
+.report-hotspot-input {
+    height: 22px;
+    width: 40%;
+    font-size: 1em;
+    border: 1px solid grey;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    font-family: inherit; font-size: inherit;
+}
+
+.report-hotspot-messagebox {
+  width: 80%;
+  height: 150px;
+  font-size: 1em;
+  font-family: inherit; font-size: inherit;
+  resize: none;
+}

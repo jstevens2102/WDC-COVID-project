@@ -1,0 +1,19 @@
+ALTER TABLE `Users` DROP FOREIGN KEY `Users_fk0`;
+
+ALTER TABLE `Venues` DROP FOREIGN KEY `Venues_fk0`;
+
+ALTER TABLE `CheckIns` DROP FOREIGN KEY `CheckIns_fk0`;
+
+ALTER TABLE `CheckIns` DROP FOREIGN KEY `CheckIns_fk1`;
+
+ALTER TABLE `HotSpots` DROP FOREIGN KEY `HotSpots_fk0`;
+
+DROP TABLE IF EXISTS `Users`;
+
+DROP TABLE IF EXISTS `PermissionLevels`;
+
+DROP TABLE IF EXISTS `Venues`;
+
+DROP TABLE IF EXISTS `CheckIns`;
+
+DROP TABLE IF EXISTS `HotSpots`;

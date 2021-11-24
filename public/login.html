@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>ViroTrack Login</title>
+    <link rel="stylesheet" href="stylesheets/mainstyle.css">
+    <script src="https://kit.fontawesome.com/d4d81ac12e.js" crossorigin="anonymous"></script>
+    <script src="javascript/login.js" defer></script>
+</head>
+<body>
+    <div id="login">
+        <div class="float-left login-logo"><img src="images/logo2.png" alt="logo" width="40" height="40"></div>
+        <h1 id="loginheader" class="center-align header-title header-text">ViroTrack</h1>
+        <div id="inputs" class="input-holder">
+            <div class="center-align">
+                <label for="login-email" class="login-input-label">Email</label><br>
+                <input id="login-email" placeholder="youremail@domain.com" class="login-input"><br>
+                <label for="login-password" class="login-input-label">Password</label><br>
+                <input id="login-password" placeholder="Password" type="password" class="login-input"><br>
+                <span class="login-small-text">Show password: </span><input id="login-showpassword" type="checkbox" name="showPassword" onclick="showPassword('login-showpassword', 'login-password')"><br><br>
+                <button class="button2 wide-button" onclick="handleLogin()">Login</button><br><br>
+                <!--<div class="separator">or</div>
+                <div class="icon-section">
+                     <i class="fab fa-facebook fa-2x icon-facebook icon-section"></i>
+                    <i class="fab fa-google fa-2x icon-google icon-section"></i>
+                </div>-->
+
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <p>Don't have an account?</p>
+                <button class="button2 wide-button" onclick="toggleSignUp()">Sign up</button>
+            </div>
+        </div>
+        <div id="signup-inputs" style="display: none;" class="input-holder">
+            <div class="center-align">
+                <span id="error-textbox" class="login-small-text">Required fields are marked with a ' <span class="required-field">*</span> '</span><br>
+                <label for="signup-email" class="login-input-label">Email <span class="required-field">*</span></label><br>
+                <input id="signup-email" placeholder="youremail@domain.com" class="login-input"><br>
+                <label for="signup-password" class="login-input-label">Password <span class="required-field">*</span></label><br>
+                <input id="signup-password" placeholder="Password" type="password" class="login-input"><br>
+                <label for="signup-password-confirm" class="login-input-label">Confirm password <span class="required-field">*</span></label><br>
+                <input id="signup-password-confirm" placeholder="Password" type="password" class="login-input"><br>
+                <span class="login-small-text">Show password: </span><input id="signup-showpassword" type="checkbox" name="showPasswordSignup" onclick="showPassword('signup-showpassword', 'signup-password'); showPassword('signup-showpassword', 'signup-password-confirm')"><br><br>
+
+                <span id="signup-name-holder" class="name-holder">
+                    <span class="block-span">
+                        <label for="signup-firstname" class="login-input-label">First Name(s) <span class="required-field">*</span></label><br>
+                        <input id="signup-firstname" placeholder="John" class="login-input"><br>
+                    </span>
+                    <span class="block-span">
+                        <label for="signup-lastname" class="login-input-label">Last Name <span class="required-field">*</span></label><br>
+                        <input id="signup-lastname" placeholder="Doe" class="login-input"><br>
+                    </span>
+                </span>
+
+                <label for="signup-contact-number" class="login-input-label">Phone Number</label><br>
+                <input id="signup-contact-number" class="login-input"><br>
+                <label for="signup-address" class="login-input-label">Address</label><br>
+                <textarea id="signup-address" class="login-input address-input"></textarea>
+
+
+                <button class="button2 wide-button" onclick="handleSignup()">Sign up</button><br>
+
+                <p>Already have an account?</p>
+                <button class="button2 wide-button" onclick="toggleSignUp()">Log in</button>
+            </div>
+        </div>
+    </div>
+    <footer id="footer">
+        <p class="center-align header-text">© ViroTrack COVID-19 Tracker 2021</p>
+    </footer>
+</body>
+</html>

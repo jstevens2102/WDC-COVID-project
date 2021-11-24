@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "WARNING: This will reset the database to the latest db_ddl.sql file and re-import the sample data."
+read -p "Are you sure? " -n 1 -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    printf "\nCreating backup...\n"
+    mysqldump -h 127.0.0.1 covid_tracking_db > database/backups/RESET_BACKUP.sql
+
+    printf "Resetting database..."
+    mysql -h 127.0.0.1 < database/db_ddl.sql
+
+    printf "Importing sample data...\n"
+    mysql -h 127.0.0.1 < database/add_sample_data.sql
+
+    printf "Done\n"
+fi
