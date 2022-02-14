@@ -14,9 +14,9 @@ database/
 Jack Stevens a1801268
 jack.stevens@student.adelaide.edu.au
 
-Adrian Coulson a1809030
-Samuel Downes a1645500
-Koleh David a1742571
+Adrian Coulson a1809030  
+Samuel Downes a1645500  
+Koleh David a1742571  
 
 
 ## Changelog
