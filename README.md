@@ -1,19 +1,13 @@
-# WDC Group Project - Covid Tracking App
+# WDC Group Project 2021 - COVID Tracking App
+
+Web & Database Computing final project created in Sem 1 2021. Through this project I learned a lot about HTML/CSS styling as well as integrating database and Javascript functionality into a web application. I also gained some experience working with the Vue.js Javascript framework.
+
+My personal overall mark for this project was 177/180 (scaled up due to positive peer review feedback from group members).
 
 ---
 
-## Project structure:
-
-**Database structure** - stored in
-```
-database/
-```
-
-## Group Members & contact details:
-
-Jack Stevens a1801268
-jack.stevens@student.adelaide.edu.au
-
+## Created by:
+Jack Stevens a1801268  
 Adrian Coulson a1809030  
 Samuel Downes a1645500  
 Koleh David a1742571  
